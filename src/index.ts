@@ -1,3 +1,5 @@
+import Matrix from './utility/Matrix';
+
 interface BoardData {
   answers: number[][];
   revealed: boolean[][];
@@ -40,7 +42,14 @@ interface Square {
 }
 
 interface Board {
-  squares: Square[][];
+  squares: Matrix<Square>;
+}
+
+interface Game {
+  board: Board;
+  elapsedSeconds: number;
+  isComplete: boolean;
+  isPaused: boolean;
 }
 
 const BoardSize = 9;
@@ -50,9 +59,17 @@ interface SquareUpdater {
   (update: Partial<Square>): void;
 }
 
+interface ModelUtilities {
+  dataToBoard(val: BoardData): Board;
+  // serializeGame(game: Game): string;
+  // reviveGame(json: string): Game;
+}
+
 interface Model {
   getBoard(): Board;
   updateSquare(row: number, column: number, update: Partial<Square> | SquareUpdater): Board;
+  // saveGame(game: Game): void;
+  // getSavedGame(): Game;
 }
 
 // - Model
@@ -60,14 +77,16 @@ const dataToBoard = (val: BoardData): Board => {
   const { answers: row, revealed } = val;
 
   return {
-    squares: row.map((answers, rowIndex) => answers.map((value, colIndex) => ({
-      answer: value,
-      attempt: null,
-      column: colIndex,
-      notes: new Set(),
-      revealed: revealed[rowIndex][colIndex],
-      row: rowIndex,
-    })))
+    squares: new Matrix(
+      row.map((answers, rowIndex) => answers.map((value, colIndex) => ({
+        answer: value,
+        attempt: null,
+        column: colIndex,
+        notes: new Set() as Set<number>,
+        revealed: revealed[rowIndex][colIndex],
+        row: rowIndex,
+      })))
+    )
   };
 };
 
@@ -79,13 +98,6 @@ const dataToBoard = (val: BoardData): Board => {
 
 
 // - Controller
-
-interface Game {
-  board: Board;
-  elapsedSeconds: number;
-  isComplete: boolean;
-  isPaused: boolean;
-}
 
 interface Controller {
   init(): void;
@@ -111,7 +123,7 @@ interface SquareElement extends HTMLDivElement {
 interface ViewUtils {
   getDataFromEl(el: SquareElement, board: Board): Square;
   renderSquare(data: Square): SquareElement;
-  calculateTime(start: number): string;
+  formatTime(start: number): string;
 };
 
 interface SquareEvent {
