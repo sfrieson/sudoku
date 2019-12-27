@@ -1,4 +1,4 @@
-import Matrix from './utility/Matrix';
+import Matrix from './utility/matrix';
 
 interface BoardData {
   answers: number[][];

@@ -3,13 +3,21 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "test": "jest --coverage"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "@babel/preset-typescript": "^7.7.7",
+    "babel-jest": "^24.9.0",
     "prettier": "1.19.1",
     "tslint": "^5.20.1",
     "typescript": "^3.7.4"
+  },
+  "dependencies": {
+    "jest": "^24.9.0"
   }
 }
