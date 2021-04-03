@@ -13,8 +13,9 @@ it('accepts height, width, and an initial value to create', () => {
 });
 
 it('initializes with a 1x1 if nothing else is supplied', () => {
-  expect(new Matrix()).toEqual(new Matrix([[]]));w
+  expect(new Matrix()).toEqual(new Matrix([[]]));
 });
+
 it('allows you to forEach the values', () => {
   let values = '';
   const expected = '123456789';
