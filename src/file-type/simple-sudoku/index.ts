@@ -1,4 +1,4 @@
-import { Board } from '../Adapter'
+import { Board } from '../Adapter';
 
 export function read(data: string): Board {
   let _data = data.trim();
@@ -9,7 +9,7 @@ export function read(data: string): Board {
 
   for (let i = 0; i < _data.length; i++) {
     const char = _data[i];
-    switch(char) {
+    switch (char) {
       case '1':
       case '2':
       case '3':
@@ -50,7 +50,7 @@ export function write(data: Board): string {
   for (let rowI = 0; rowI < data.length; rowI++) {
     const row = data[rowI];
     for (let colI = 0; colI < row.length; colI++) {
-      file += (row[colI] || '.');
+      file += row[colI] || '.';
       if (colI === 2 || colI === 5) {
         file += '|';
       }
@@ -63,6 +63,5 @@ export function write(data: Board): string {
     }
   }
 
-  return file;
+  return file.trim();
 }
-
