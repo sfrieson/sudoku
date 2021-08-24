@@ -1,26 +1,16 @@
+import * as fs from 'fs';
+import * as path from 'path';
+
 import { read, write } from './';
 
-const mdFile = `1..|...|7..
-.2.|...|5..
-6..|38.|...
------------
-.78|...|...
-...|6.9|...
-...|...|14.
------------
-...|.25|..9
-..3|...|.6.
-..4|...|..2`;
-
-const xFile = `1XXXXX7XX
-X2XXXX5XX
-6XX38XXXX
-X78XXXXXX
-XXX6X9XXX
-XXXXXX14X
-XXXX25XX9
-XX3XXXX6X
-XX4XXXXX2`;
+const mdFile = fs
+  .readFileSync(path.resolve(__dirname, 'examples', 'md.ss'), {
+    encoding: 'utf-8',
+  })
+  .trim();
+const xFile = fs.readFileSync(path.resolve(__dirname, 'examples', 'x.ss'), {
+  encoding: 'utf-8',
+});
 
 const matrix = [
   [
