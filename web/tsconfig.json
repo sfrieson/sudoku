@@ -3,11 +3,12 @@
   "compilerOptions": {
     "module": "ES6",
     "target": "ES2018",
-    "baseUrl": "./src",
+    "baseUrl": "./src/",
     "paths": {
-      "/core/*": ["../../core/src/*"]
+      "~core/*": ["../../core/src/*"]
     },
-    "lib": ["DOM", "DOM.Iterable", "ES2018"]
+    "lib": ["DOM", "DOM.Iterable", "ES2018"],
+    "outDir": "./build"
   },
   "include": ["./src/**/*"]
 }

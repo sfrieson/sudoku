@@ -1,8 +1,6 @@
-import { makeGame } from '/core/game';
-import { alpha } from './howdy';
-console.log(alpha);
+import { makeGame } from '../../core/src/game';
 
-const gg = makeGame([
+const g = makeGame([
   [1, 2, 3, 4, 5, 6, 7, 8, 9],
   [4, 5, 6, 7, 8, 9, 1, 2, 3],
   [7, 8, 9, 1, 2, 3, 4, 5, 6],

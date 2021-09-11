@@ -19,12 +19,9 @@ export class Matrix<ItemType> {
     width?: number,
     fill?: ItemType,
   ) {
-    if (fill) console.log('i gotta Phil', fill);
     if (typeof width === 'number' && typeof startOrHeight === 'number') {
-      if (fill) console.log('i gotta iPhil', fill);
       const height = startOrHeight;
       this.#store = Array.from({ length: height }).map(() => {
-        if (fill) console.log('i gotta mapPhil', fill);
         let row: ItemType[] = Array.from({ length: width });
         if (typeof fill !== 'undefined') {
           row = row.fill(fill);
