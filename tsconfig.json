@@ -6,11 +6,10 @@
     "noImplicitAny": true,
     "removeComments": true,
     "sourceMap": true,
-    "outDir": "build/",
     "target": "ES6",
     "strict": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "incremental": true
   },
-  "include": ["src/**/*"],
   "exclude": ["node_modules", "__tests__"]
 }

@@ -1,7 +1,7 @@
 export interface Position {
   rowIndex: number;
   columnIndex: number;
-};
+}
 interface ForEachCallback<ItemType> {
   (cell: ItemType, position: Position, matrix: Matrix<ItemType>): void;
 }
@@ -14,12 +14,19 @@ export class Matrix<ItemType> {
   constructor(height: number, width: number, fill?: ItemType);
   constructor(start: ItemType[][]);
   constructor();
-  constructor(startOrHeight?: number | ItemType[][], width?: number, fill?: ItemType) {
+  constructor(
+    startOrHeight?: number | ItemType[][],
+    width?: number,
+    fill?: ItemType,
+  ) {
+    if (fill) console.log('i gotta Phil', fill);
     if (typeof width === 'number' && typeof startOrHeight === 'number') {
+      if (fill) console.log('i gotta iPhil', fill);
       const height = startOrHeight;
       this.#store = Array.from({ length: height }).map(() => {
-        let row: ItemType[] = Array.from({ length: width })
-        if (fill) {
+        if (fill) console.log('i gotta mapPhil', fill);
+        let row: ItemType[] = Array.from({ length: width });
+        if (typeof fill !== 'undefined') {
           row = row.fill(fill);
         }
         return row;
@@ -33,7 +40,7 @@ export class Matrix<ItemType> {
   forEach(cb: ForEachCallback<ItemType>): void {
     for (const [rowIndex, row] of this.#store.entries()) {
       for (const [columnIndex, cell] of row.entries()) {
-        cb(cell, {rowIndex, columnIndex}, this);
+        cb(cell, { rowIndex, columnIndex }, this);
       }
     }
   }
@@ -44,18 +51,31 @@ export class Matrix<ItemType> {
     this.#store[rowIndex][columnIndex] = item;
   }
   getColumn(index: number): ItemType[] {
-    return this.#store.map(row => row[index]);
+    return this.#store.map((row) => row[index]);
   }
   getRow(index: number): ItemType[] {
     return this.#store[index];
   }
   map(cb: MapCallback<ItemType>): Matrix<ItemType> {
     return new Matrix(
-      this.#store.map((row, rowIndex) => row.map((cell, columnIndex) => cb(cell, {rowIndex, columnIndex}, this)))
+      this.#store.map((row, rowIndex) =>
+        row.map((cell, columnIndex) =>
+          cb(cell, { rowIndex, columnIndex }, this),
+        ),
+      ),
     );
   }
-  slice(startRow: number, startColumn: number, endRow: number, endColumn: number): Matrix<ItemType> {
-    return new Matrix(this.#store.slice(startRow, endRow).map(row => row.slice(startColumn, endColumn)));
+  slice(
+    startRow: number,
+    startColumn: number,
+    endRow: number,
+    endColumn: number,
+  ): Matrix<ItemType> {
+    return new Matrix(
+      this.#store
+        .slice(startRow, endRow)
+        .map((row) => row.slice(startColumn, endColumn)),
+    );
   }
   toJSON() {
     return this.#store;

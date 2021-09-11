@@ -1,0 +1,24 @@
+.board {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  outline: 2px solid blue;
+  width: 720px;
+}
+.cell {
+  outline: 1px solid black;
+  width: 80px;
+  height: 80px;
+  margin: 0;
+  position: relative;
+}
+.cell:focus-within {
+  z-index: 1;
+}
+.cell-input {
+  width: 100%;
+  margin: 0;
+  border: 0;
+  box-sizing: border-box;
+  height: 100%;
+  text-align: center;
+}

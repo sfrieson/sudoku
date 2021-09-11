@@ -20,6 +20,12 @@ describe('matrix', () => {
         ['hi', 'hi'],
       ]),
     );
+    expect(new Matrix(2, 2)).toEqual(
+      new Matrix([
+        [undefined, undefined],
+        [undefined, undefined],
+      ]),
+    );
   });
 
   it('initializes with a 1x1 if nothing else is supplied', () => {
@@ -100,5 +106,19 @@ describe('matrix', () => {
       [5, 6],
     ]);
     expect(m.slice(0, 1, 2, 3)).toEqual(expected);
+  });
+
+  it('allows you to set cell values', () => {
+    const m = new Matrix([
+      [1, 2],
+      [3, 4],
+    ]);
+    m.setCell(1, 1, 5);
+
+    const expected = new Matrix([
+      [1, 2],
+      [5, 4],
+    ]);
+    expect(m).toEqual(expected);
   });
 });
