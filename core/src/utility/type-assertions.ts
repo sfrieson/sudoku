@@ -6,7 +6,8 @@ export function assertValidIndex(
   }
 }
 
-export function checkValidValue(value: unknown): value is CellValue {
+function checkValidValue(value: unknown): value is CellValue {
+  if (value === null) return true;
   return typeof value === 'number' && value >= 1 && value <= 9;
 }
 export function assertValidValue(value: unknown): asserts value is CellValue {

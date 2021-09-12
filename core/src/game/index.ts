@@ -62,7 +62,7 @@ function makeBoard(given: Array<Array<number | undefined | null>>) {
   given.forEach((row, i) => {
     row.forEach((cellValue = null, j) => {
       // Ensure that these outside values are aligned with what we are expecting.
-      if (cellValue !== null) assertValidValue(cellValue);
+      assertValidValue(cellValue);
       assertValidIndex(i);
       assertValidIndex(j);
 

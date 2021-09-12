@@ -1,7 +1,9 @@
 import { GameControls, loadGame, UIGame } from '../../core/src/ui';
 
 const rootEl = document.createElement('div');
-var template: HTMLTemplateElement = document.querySelector('#cell-template')!;
+var originalTemplate: HTMLTemplateElement = document.querySelector(
+  '#cell-template',
+)!;
 document.body.appendChild(rootEl);
 
 const queueRender = (() => {
@@ -18,17 +20,23 @@ function fillUI(game: UIGame) {
   const board = document.createElement('div');
   board.classList.add('board');
   game.board.forEachCell((cell) => {
-    const cellEl = template.content.cloneNode(true) as DocumentFragment;
+    const template = originalTemplate.content.cloneNode(
+      true,
+    ) as DocumentFragment;
 
     if (cell.value) {
-      const textElement = cellEl.querySelector(
+      const textElement = template.querySelector(
         '#cell-number',
       ) as HTMLDivElement;
       textElement.textContent = cell.value.toString();
     }
-    (cellEl.querySelector('.cell') as HTMLDivElement).dataset.cellName =
-      cell.name;
-    board.appendChild(cellEl);
+    const baseCell = template.querySelector('.cell') as HTMLDivElement;
+
+    baseCell.dataset.cellName = cell.name;
+    if (game.activeCells.has(cell.name)) {
+      baseCell.classList.add('cell--active');
+    }
+    board.appendChild(template);
   });
 
   if (rootEl.children.length) {
@@ -39,6 +47,11 @@ function fillUI(game: UIGame) {
 }
 
 function listenForInput(controls: GameControls) {
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Backspace') {
+      controls.inputCellValue(null);
+    }
+  });
   document.addEventListener('keypress', (e) => {
     switch (e.key) {
       case 'Backspace':
@@ -58,7 +71,7 @@ function listenForInput(controls: GameControls) {
         break;
       }
       default:
-      // nonoe
+      // none
     }
   });
 
@@ -76,12 +89,10 @@ function listenForInput(controls: GameControls) {
 loadGame(function (event) {
   switch (event.type) {
     case 'GameInitialized':
-      console.log('ready');
       listenForInput(event.controls);
       break;
     case 'NewState':
       queueRender(() => {
-        console.log('render');
         fillUI(event.game);
       });
       break;

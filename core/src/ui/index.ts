@@ -3,7 +3,7 @@ import * as ss from '../file-type/simple-sudoku';
 import { makeGame } from '../game';
 import {
   assertValidCellName,
-  checkValidValue,
+  assertValidValue,
 } from '../utility/type-assertions';
 
 function makeGameState(
@@ -81,7 +81,7 @@ function initGame(givens: Board) {
   }
 
   function inputCellValue(cellValue: number | null) {
-    if (!checkValidValue(cellValue)) return;
+    assertValidValue(cellValue);
     state.activeCells.forEach((cellName) => {
       game.fillCell(cellName, cellValue);
     });
