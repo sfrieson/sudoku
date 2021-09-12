@@ -5,11 +5,15 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Game</title>
+  <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-  <div id="game"></div>
   <template id="cell-template">
-    <div class="cell"><input type="number" class="cell-input" min="1" max="9"></div>
+    <div class="cell">
+      <!-- TODO This cannot be an id -->
+      <div class="cell-number" id="cell-number">
+      </div>
+    </div>
   </template>
   <script type="module" src="./game.ts"></script>
 </body>
