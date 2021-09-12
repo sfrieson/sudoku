@@ -1,6 +1,10 @@
 import { Board } from '../file-type/Adapter';
 import * as ss from '../file-type/simple-sudoku';
-import { CellName, CellValue, makeGame } from '../game';
+import { makeGame } from '../game';
+import {
+  assertValidCellName,
+  checkValidValue,
+} from '../utility/type-assertions';
 
 function makeGameState(
   activeCells: Set<CellName>,
@@ -49,12 +53,15 @@ function initGame(givens: Board) {
   let state: {
     activeCells: Set<CellName>;
     selectionMode: SelectionMode;
+    inputMode: InputMode;
   } = {
     activeCells: new Set(),
     selectionMode: 'single-select',
+    inputMode: 'attempt',
   };
 
-  function toggleCellFocus(nextFocusedCellNames: CellName) {
+  function toggleCellFocus(nextFocusedCellNames: string) {
+    assertValidCellName(nextFocusedCellNames);
     if (state.selectionMode === 'single-select') {
       state.activeCells = new Set([nextFocusedCellNames]);
     }
@@ -73,7 +80,8 @@ function initGame(givens: Board) {
     });
   }
 
-  function inputCellValue(cellValue: number) {
+  function inputCellValue(cellValue: number | null) {
+    if (!checkValidValue(cellValue)) return;
     state.activeCells.forEach((cellName) => {
       game.fillCell(cellName, cellValue);
     });

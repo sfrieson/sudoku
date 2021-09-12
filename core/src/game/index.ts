@@ -1,14 +1,16 @@
-export type CellValue = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
-type RowOrColumnNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
-type RowOrColumnIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
-export type CellName = `r${RowOrColumnNumber}c${RowOrColumnNumber}`;
+import {
+  assertValidIndex,
+  assertValidNumber,
+  assertValidValue,
+} from '../utility/type-assertions';
+
 type Cell = {
   name: CellName;
   row: RowOrColumnNumber;
   column: RowOrColumnNumber;
   given: boolean;
-  value?: number;
-  fill(value: Cell['value']): void;
+  value: CellValue | null;
+  fill(value: CellValue | null): void;
 };
 
 function makeCellName(
@@ -16,28 +18,6 @@ function makeCellName(
   column: RowOrColumnNumber,
 ): Cell['name'] {
   return `r${row}c${column}`;
-}
-
-function assertValidIndex(index: number): asserts index is RowOrColumnIndex {
-  if (index < 0 || index > 8) {
-    throw new Error('Index supplied is out of range.');
-  }
-}
-
-export function assertValidValue(
-  value?: number,
-): asserts value is CellValue | undefined {
-  if (typeof value !== 'undefined' && (value < 1 || value > 9)) {
-    throw new Error('Value is not valid');
-  }
-}
-
-function assertValidNumber(
-  number: number,
-): asserts number is RowOrColumnNumber {
-  if (number < 1 || number > 9) {
-    throw new Error('Number supplied is out of range.');
-  }
 }
 
 function convertIndexToNumber(index: number): RowOrColumnNumber {
@@ -51,7 +31,7 @@ interface CellOptions {
   given?: boolean;
 }
 function makeCell(
-  value: CellValue | undefined,
+  value: CellValue | null,
   rowIndex: RowOrColumnIndex,
   columnIndex: RowOrColumnIndex,
   options: CellOptions,
@@ -76,13 +56,13 @@ function makeCell(
   return cell;
 }
 
-function makeBoard(given: Array<Array<number | undefined>>) {
+function makeBoard(given: Array<Array<number | undefined | null>>) {
   const cell: Partial<Record<Cell['name'], Cell>> = {};
   const cellList: Cell[] = [];
   given.forEach((row, i) => {
-    row.forEach((cellValue, j) => {
+    row.forEach((cellValue = null, j) => {
       // Ensure that these outside values are aligned with what we are expecting.
-      assertValidValue(cellValue);
+      if (cellValue !== null) assertValidValue(cellValue);
       assertValidIndex(i);
       assertValidIndex(j);
 
@@ -105,7 +85,7 @@ function makeBoard(given: Array<Array<number | undefined>>) {
         if (!data[rowIndex]) {
           data[rowIndex] = [];
         }
-        data[rowIndex][columnIndex] = cell.value;
+        data[rowIndex][columnIndex] = cell.value || undefined;
         return data;
       }, []);
     },
@@ -115,7 +95,7 @@ function makeBoard(given: Array<Array<number | undefined>>) {
 export function makeGame(given: Array<Array<number | undefined>>) {
   const board = makeBoard(given);
 
-  function fillCell(cellName: Cell['name'], value: Cell['value']) {
+  function fillCell(cellName: CellName, value: CellValue | null) {
     board.cell[cellName].fill(value);
   }
 

@@ -1,4 +1,3 @@
-import { CellName } from '~core/game';
 import { GameControls, loadGame, UIGame } from '../../core/src/ui';
 
 const rootEl = document.createElement('div');
@@ -41,17 +40,35 @@ function fillUI(game: UIGame) {
 
 function listenForInput(controls: GameControls) {
   document.addEventListener('keypress', (e) => {
-    const int = parseInt(e.key);
-    if (int) {
-      controls.inputCellValue(int);
+    switch (e.key) {
+      case 'Backspace':
+        controls.inputCellValue(null);
+        break;
+      case '1':
+      case '2':
+      case '3':
+      case '4':
+      case '5':
+      case '6':
+      case '7':
+      case '8':
+      case '9': {
+        const num = parseInt(e.key);
+        controls.inputCellValue(num);
+        break;
+      }
+      default:
+      // nonoe
     }
   });
+
   document.addEventListener('click', (e) => {
     if (!(e.target instanceof HTMLElement) || !e.target.matches('.cell')) {
       return;
     }
-    // TODO make this safer
-    const cellName = e.target.dataset.cellName as CellName;
+
+    const cellName = e.target.dataset.cellName;
+    if (!cellName) throw new Error('Cell name not found on element');
     controls.toggleCellFocus(cellName);
   });
 }

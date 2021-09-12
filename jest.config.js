@@ -5,6 +5,7 @@ module.exports = {
   testPathIgnorePatterns: ['node_modules', 'build'],
   collectCoverageFrom: [
     '**/src/**/*.{ts,tsx,js,jsx}',
+    '!**/*.d.ts',
     '!**/node_modules/**',
     '!**/build/**',
   ],

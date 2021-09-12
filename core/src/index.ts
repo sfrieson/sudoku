@@ -1,8 +1,7 @@
 import * as ss from './file-type/simple-sudoku';
 import { makeGame } from './game';
 
-const file =
-`.1.|739|.2.
+const file = `.1.|739|.2.
 27.|.8.|9.1
 .46|..2|7.8
 -----------
@@ -22,7 +21,7 @@ export function show() {
   console.log(ss.write(game.board.toData()));
 }
 
-export function fill(cell: any, value: number | undefined) {
+export function fill(cell: any, value: number) {
   game.fillCell(cell, value);
   show();
 }
