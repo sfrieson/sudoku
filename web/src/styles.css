@@ -1,22 +1,39 @@
+:root {
+  --square: 80px;
+}
 .board {
   display: grid;
-  grid-template-columns: repeat(9, 1fr);
+  height: calc(var(--square) * 9);
   outline: 2px solid blue;
-  width: 720px;
+  width: calc(var(--square) * 9);
+}
+.box-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  position: absolute;
+}
+.box {
+  height: calc(var(--square) * 3);
+  outline: 2px solid black;
+  width: calc(var(--square) * 3);
+}
+.cell-grid {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
 }
 .cell {
   display: grid;
   align-items: center;
   justify-content: center;
-  height: 80px;
+  height: var(--square);
   margin: 0;
   outline: 1px solid black;
   position: relative;
-  width: 80px;
+  width: var(--square);
 }
 .cell.cell--active {
   background-color: lightblue;
-  z-index: 1;
+  mix-blend-mode: multiply;
 }
 .cell-number {
   border: 0;

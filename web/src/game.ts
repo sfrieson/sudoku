@@ -1,8 +1,11 @@
 import { GameControls, loadGame, UIGame } from '../../core/src/ui';
 
 const rootEl = document.createElement('div');
-var originalTemplate: HTMLTemplateElement = document.querySelector(
+var originalCellTemplate: HTMLTemplateElement = document.querySelector(
   '#cell-template',
+)!;
+var originalBoxTemplate: HTMLTemplateElement = document.querySelector(
+  '#box-template',
 )!;
 document.body.appendChild(rootEl);
 
@@ -16,11 +19,32 @@ const queueRender = (() => {
   };
 })();
 
+type ElementOptions = {
+  classList?: string[];
+};
+function createElement<ElementType extends keyof HTMLElementTagNameMap>(
+  elementName: ElementType,
+  options: ElementOptions = {},
+): HTMLElementTagNameMap[ElementType] {
+  const { classList = [] } = options;
+  const el = document.createElement(elementName);
+  classList.forEach((name) => el.classList.add(name));
+
+  return el;
+}
 function fillUI(game: UIGame) {
-  const board = document.createElement('div');
-  board.classList.add('board');
+  const board = createElement('div', { classList: ['board'] });
+  const cellGrid = createElement('div', { classList: ['cell-grid'] });
+  const boxGrid = createElement('div', { classList: ['box-grid'] });
+
+  for (var i = 0; i < 9; i++) {
+    const boxTemplate = originalBoxTemplate.content.cloneNode(true);
+    boxGrid.appendChild(boxTemplate);
+  }
+  board.appendChild(boxGrid);
+
   game.board.forEachCell((cell) => {
-    const template = originalTemplate.content.cloneNode(
+    const template = originalCellTemplate.content.cloneNode(
       true,
     ) as DocumentFragment;
 
@@ -36,8 +60,10 @@ function fillUI(game: UIGame) {
     if (game.activeCells.has(cell.name)) {
       baseCell.classList.add('cell--active');
     }
-    board.appendChild(template);
+    cellGrid.appendChild(template);
   });
+
+  board.appendChild(cellGrid);
 
   if (rootEl.children.length) {
     rootEl.replaceChild(board, rootEl.children[0]);
